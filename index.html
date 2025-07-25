@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NanoGPT 3D Architecture Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Main 3D Canvas -->
+        <div id="canvas-container">
+            <canvas id="three-canvas"></canvas>
+        </div>
+
+        <!-- Control Panel -->
+        <div id="control-panel" class="panel">
+            <div class="panel-header">
+                <h3>Controls</h3>
+                <button id="toggle-panel" class="btn btn--sm">−</button>
+            </div>
+            <div class="panel-content">
+                <div class="form-group">
+                    <label class="form-label">Model Overview</label>
+                    <div class="model-stats">
+                        <div class="stat">
+                            <span class="stat-label">Parameters:</span>
+                            <span class="stat-value">124M</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Layers:</span>
+                            <span class="stat-value">6</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Heads:</span>
+                            <span class="stat-value">12</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Context:</span>
+                            <span class="stat-value">1024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Component Visibility</label>
+                    <div class="toggle-grid">
+                        <label class="toggle-item">
+                            <input type="checkbox" id="toggle-embeddings" checked>
+                            <span>Embeddings</span>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="toggle-attention" checked>
+                            <span>Attention</span>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="toggle-mlp" checked>
+                            <span>MLP</span>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="toggle-layernorm" checked>
+                            <span>Layer Norm</span>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="toggle-output" checked>
+                            <span>Output</span>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="toggle-connections" checked>
+                            <span>Connections</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Animation</label>
+                    <div class="animation-controls">
+                        <button id="play-animation" class="btn btn--primary btn--sm">▶ Play</button>
+                        <button id="pause-animation" class="btn btn--secondary btn--sm">⏸ Pause</button>
+                        <button id="reset-animation" class="btn btn--secondary btn--sm">⏹ Reset</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Speed</label>
+                        <input type="range" id="animation-speed" min="0.1" max="2" step="0.1" value="1" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">View Presets</label>
+                    <div class="view-buttons">
+                        <button id="view-overview" class="btn btn--outline btn--sm">Overview</button>
+                        <button id="view-attention" class="btn btn--outline btn--sm">Attention</button>
+                        <button id="view-layers" class="btn btn--outline btn--sm">Layers</button>
+                        <button id="view-flow" class="btn btn--outline btn--sm">Data Flow</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Panel -->
+        <div id="info-panel" class="panel">
+            <div class="panel-header">
+                <h3>Component Info</h3>
+                <button id="toggle-info" class="btn btn--sm">−</button>
+            </div>
+            <div class="panel-content">
+                <div id="component-info">
+                    <h4 id="component-name">NanoGPT Architecture</h4>
+                    <p id="component-description">
+                        A 124M parameter transformer model with 6 layers, 12 attention heads, and 768 embedding dimensions.
+                        Hover over components to see detailed information.
+                    </p>
+                    <div id="component-specs">
+                        <div class="spec-item">
+                            <span class="spec-label">Input Shape:</span>
+                            <span class="spec-value">[1024]</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Output Shape:</span>
+                            <span class="spec-value">[1024, 50257]</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Parameters:</span>
+                            <span class="spec-value">124M</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loading-screen">
+            <div class="loading-content">
+                <h2>Loading NanoGPT Visualizer</h2>
+                <div class="loading-spinner"></div>
+                <p>Initializing 3D components...</p>
+            </div>
+        </div>
+
+        <!-- Educational Mode Toggle -->
+        <div id="educational-toggle">
+            <button id="education-mode" class="btn btn--primary">
+                📚 Educational Mode
+            </button>
+        </div>
+
+        <!-- Navigation Help -->
+        <div id="navigation-help">
+            <div class="help-content">
+                <h4>Navigation</h4>
+                <div class="help-item">
+                    <span class="help-key">Left Click + Drag</span>
+                    <span class="help-action">Rotate</span>
+                </div>
+                <div class="help-item">
+                    <span class="help-key">Right Click + Drag</span>
+                    <span class="help-action">Pan</span>
+                </div>
+                <div class="help-item">
+                    <span class="help-key">Mouse Wheel</span>
+                    <span class="help-action">Zoom</span>
+                </div>
+                <div class="help-item">
+                    <span class="help-key">Click Component</span>
+                    <span class="help-action">Focus</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
